@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)file:///Users/matiasortiz/Downloads/index_1.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camión Empresa — TGS</title>
+<script src="./Camión Empresa — TGS_files/graph-js-sdk.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --azul: #0078D4;
+    --azul-dark: #005A9E;
+    --azul-light: #EBF3FB;
+    --verde: #107C10;
+    --verde-light: #DFF6DD;
+    --amarillo: #FFF4CE;
+    --amarillo-dark: #7A5C00;
+    --rojo-light: #FDE7E9;
+    --rojo-dark: #7A0005;
+    --gris: #F3F2F1;
+    --gris-borde: #EDEBE9;
+    --texto: #201F1E;
+    --texto-suave: #605E5C;
+    --fondo: #FAF9F8;
+    --blanco: #FFFFFF;
+    --radio: 8px;
+    --radio-lg: 12px;
+    --sombra: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 220px;
+    background: var(--blanco);
+    border-right: 1px solid var(--gris-borde);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--gris-borde);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--azul);
+    border-radius: var(--radio);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-text { font-size: 13px; font-weight: 600; line-height: 1.3; }
+  .logo-sub { font-size: 11px; color: var(--texto-suave); font-weight: 400; }
+
+  .sidebar-nav { padding: 12px 10px; flex: 1; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radio);
+    cursor: pointer;
+    color: var(--texto-suave);
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+    border: none; background: transparent; width: 100%; text-align: left;
+  }
+  .nav-item:hover { background: var(--gris); color: var(--texto); }
+  .nav-item.active { background: var(--azul-light); color: var(--azul); font-weight: 500; }
+  .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .badge-count {
+    margin-left: auto;
+    background: var(--azul);
+    color: white;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--gris-borde);
+  }
+
+  .user-chip {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-avatar {
+    width: 32px; height: 32px;
+    background: var(--azul);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px; font-weight: 600;
+  }
+  .user-name { font-size: 12px; font-weight: 500; }
+  .user-role { font-size: 11px; color: var(--texto-suave); }
+
+  /* MAIN */
+  .main { margin-left: 220px; flex: 1; padding: 28px 32px; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .page-title { font-size: 20px; font-weight: 600; }
+  .page-sub { font-size: 13px; color: var(--texto-suave); margin-top: 2px; }
+
+  .role-toggle {
+    display: flex;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    overflow: hidden;
+    background: var(--blanco);
+  }
+  .role-btn {
+    padding: 7px 16px; font-size: 13px; cursor: pointer;
+    background: transparent; border: none;
+    color: var(--texto-suave);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    font-weight: 400;
+  }
+  .role-btn.active { background: var(--azul); color: white; font-weight: 500; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-lg);
+    padding: 18px 20px;
+  }
+  .stat-label { font-size: 12px; color: var(--texto-suave); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-val { font-size: 28px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .stat-val.azul { color: var(--azul); }
+  .stat-val.verde { color: var(--verde); }
+  .stat-val.amarillo { color: var(--amarillo-dark); }
+
+  /* CALENDAR */
+  .cal-wrapper {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-lg);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+  }
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .cal-title { font-size: 15px; font-weight: 600; }
+  .cal-nav { display: flex; gap: 6px; }
+  .cal-nav button {
+    width: 30px; height: 30px;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    background: transparent; cursor: pointer;
+    font-size: 14px; color: var(--texto-suave);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .cal-nav button:hover { background: var(--gris); }
+
+  .cal-days-header {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    background: var(--gris);
+    padding: 8px 0;
+  }
+  .cal-day-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+
+  .cal-cell {
+    min-height: 80px;
+    padding: 8px 6px;
+    border-top: 1px solid var(--gris-borde);
+    border-right: 1px solid var(--gris-borde);
+    position: relative;
+  }
+  .cal-cell:nth-child(7n) { border-right: none; }
+
+  .cal-num {
+    font-size: 12px; color: var(--texto-suave);
+    margin-bottom: 4px; width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: 500;
+  }
+  .cal-num.hoy { background: var(--azul); color: white; }
+  .cal-num.otro-mes { color: #C8C6C4; }
+
+  .evento {
+    font-size: 11px; padding: 3px 6px;
+    border-radius: 4px; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    cursor: pointer; font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .evento:hover { opacity: 0.8; }
+  .evento.pendiente { background: var(--amarillo); color: var(--amarillo-dark); }
+  .evento.aprobado { background: var(--verde-light); color: var(--verde); }
+  .evento.rechazado { background: var(--rojo-light); color: var(--rojo-dark); }
+
+  .leyenda {
+    display: flex; gap: 16px; margin-top: 14px;
+    font-size: 12px; color: var(--texto-suave);
+  }
+  .leyenda-item { display: flex; align-items: center; gap: 6px; }
+  .leyenda-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* FORM */
+  .form-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-lg);
+    padding: 24px;
+    max-width: 600px;
+    box-shadow: var(--sombra);
+  }
+  .form-section-title {
+    font-size: 11px; font-weight: 600; color: var(--texto-suave);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 12px; margin-top: 20px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--gris-borde);
+  }
+  .form-section-title:first-child { margin-top: 0; }
+  .form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-row { margin-bottom: 14px; }
+  .form-row label { display: block; font-size: 12px; font-weight: 500; color: var(--texto-suave); margin-bottom: 5px; }
+  .form-row input, .form-row textarea, .form-row select {
+    width: 100%; padding: 8px 12px;
+    border: 1px solid var(--gris-borde); border-radius: var(--radio);
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    background: var(--fondo); color: var(--texto);
+    transition: border-color 0.15s;
+  }
+  .form-row input:focus, .form-row textarea:focus {
+    outline: none; border-color: var(--azul);
+    background: var(--blanco);
+  }
+  .form-row textarea { height: 80px; resize: none; }
+
+  .conflict-alert {
+    background: #FFF4CE; border: 1px solid #F7CA46;
+    border-radius: var(--radio); padding: 12px 16px;
+    font-size: 13px; color: var(--amarillo-dark);
+    margin-bottom: 16px; display: none;
+    gap: 8px; align-items: flex-start;
+  }
+  .conflict-alert.show { display: flex; }
+
+  .success-alert {
+    background: var(--verde-light); border: 1px solid #92C353;
+    border-radius: var(--radio); padding: 12px 16px;
+    font-size: 13px; color: var(--verde);
+    margin-bottom: 16px; display: none;
+    gap: 8px; align-items: center;
+  }
+  .success-alert.show { display: flex; }
+
+  .btn-primary {
+    background: var(--azul); color: white;
+    border: none; border-radius: var(--radio);
+    padding: 10px 24px; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--azul-dark); }
+
+  /* APROBACIONES */
+  .req-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .req-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio-lg);
+    padding: 18px 20px;
+    box-shadow: var(--sombra);
+    transition: box-shadow 0.15s;
+  }
+  .req-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+
+  .req-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+  .req-nombre { font-size: 15px; font-weight: 600; }
+  .req-area { font-size: 12px; color: var(--texto-suave); margin-top: 2px; }
+
+  .badge {
+    font-size: 11px; padding: 4px 12px;
+    border-radius: 20px; font-weight: 600;
+  }
+  .badge.pendiente { background: var(--amarillo); color: var(--amarillo-dark); }
+  .badge.aprobado { background: var(--verde-light); color: var(--verde); }
+  .badge.rechazado { background: var(--rojo-light); color: var(--rojo-dark); }
+
+  .req-info {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px 24px; margin-bottom: 14px;
+    font-size: 13px;
+  }
+  .req-info-row { display: flex; gap: 6px; }
+  .req-info-label { color: var(--texto-suave); min-width: 70px; }
+
+  .req-instruc {
+    width: 100%; padding: 8px 12px;
+    border: 1px solid var(--gris-borde); border-radius: var(--radio);
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    margin-bottom: 10px; background: var(--fondo);
+    color: var(--texto);
+  }
+  .req-instruc:focus { outline: none; border-color: var(--azul); }
+
+  .req-actions { display: flex; gap: 8px; }
+  .btn-aprobar {
+    background: var(--verde-light); color: var(--verde);
+    border: 1px solid #92C353; border-radius: var(--radio);
+    padding: 7px 16px; font-size: 13px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: all 0.15s;
+  }
+  .btn-aprobar:hover { background: #C8EFC8; }
+  .btn-rechazar {
+    background: var(--rojo-light); color: var(--rojo-dark);
+    border: 1px solid #F1707A; border-radius: var(--radio);
+    padding: 7px 16px; font-size: 13px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: all 0.15s;
+  }
+  .btn-rechazar:hover { background: #F9D0D3; }
+
+  /* CHOFER */
+  .chofer-fecha {
+    font-size: 13px; color: var(--texto-suave);
+    margin-bottom: 16px; font-weight: 500;
+  }
+  .chofer-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-left: 4px solid var(--azul);
+    border-radius: var(--radio-lg);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--sombra);
+  }
+  .chofer-hora { font-size: 13px; font-weight: 600; color: var(--azul); font-family: 'DM Mono', monospace; margin-bottom: 6px; }
+  .chofer-destino { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+  .chofer-row { font-size: 13px; color: var(--texto-suave); margin-bottom: 4px; }
+  .chofer-row span { color: var(--texto); font-weight: 500; }
+  .chofer-instruc {
+    background: var(--gris); border-radius: var(--radio);
+    padding: 10px 12px; font-size: 12px;
+    color: var(--texto-suave); margin-top: 10px;
+    border-left: 3px solid var(--azul);
+  }
+
+  /* LOGIN */
+  .login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: var(--fondo);
+  }
+  .login-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    max-width: 380px; width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .login-logo {
+    width: 64px; height: 64px;
+    background: var(--azul);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 20px;
+  }
+  .login-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+  .login-sub { font-size: 13px; color: var(--texto-suave); margin-bottom: 28px; }
+  .btn-ms {
+    width: 100%;
+    background: var(--azul); color: white;
+    border: none; border-radius: var(--radio);
+    padding: 12px 24px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: background 0.15s;
+  }
+  .btn-ms:hover { background: var(--azul-dark); }
+  .login-note { font-size: 11px; color: var(--texto-suave); margin-top: 16px; }
+
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MODAL EVENTO */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--blanco);
+    border-radius: var(--radio-lg);
+    padding: 24px; max-width: 420px; width: 90%;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  }
+  .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
+  .modal-row { font-size: 13px; margin-bottom: 8px; color: var(--texto-suave); }
+  .modal-row span { color: var(--texto); font-weight: 500; }
+  .modal-close {
+    margin-top: 16px; width: 100%;
+    background: var(--gris); border: none; border-radius: var(--radio);
+    padding: 9px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">🚛</div>
+    <div class="login-title">Camión Empresa</div>
+    <div class="login-sub">Plataforma de gestión de transporte<br>ASESORIAS TGS LIMITADA</div>
+    <button class="btn-ms" onclick="iniciarSesion()" id="btn-login">
+      <span>🔐</span>
+      <span>Iniciar sesión con Microsoft</span>
+      <div class="spinner" id="spinner-login"></div>
+    </button>
+    <div class="login-note">Usa tu cuenta @agenciatgs.cl o @tallerpro.cl</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="layout" id="app" style="display:none">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🚛</div>
+      <div>
+        <div class="logo-text">Camión Empresa</div>
+        <div class="logo-sub">TGS Logística</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="setTab(&#39;calendario&#39;, this)">
+        <span class="nav-icon">📅</span> Calendario
+      </button>
+      <button class="nav-item" onclick="setTab(&#39;solicitar&#39;, this)">
+        <span class="nav-icon">➕</span> Solicitar viaje
+      </button>
+      <button class="nav-item admin-only" onclick="setTab(&#39;aprobaciones&#39;, this)" style="display:none">
+        <span class="nav-icon">✅</span> Aprobaciones
+        <span class="badge-count" id="badge-nav">0</span>
+      </button>
+      <button class="nav-item admin-only" onclick="setTab(&#39;chofer&#39;, this)" style="display:none">
+        <span class="nav-icon">🧑‍✈️</span> Vista chofer
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div>
+          <div class="user-name" id="user-name">Cargando...</div>
+          <div class="user-role" id="user-role">Empleado</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;">
+        <div style="font-size:11px;color:var(--texto-suave);margin-bottom:4px;">Cambiar rol (demo):</div>
+        <div class="role-toggle">
+          <button class="role-btn active" onclick="setRol(&#39;empleado&#39;)">Empleado</button>
+          <button class="role-btn" onclick="setRol(&#39;admin&#39;)">Admin</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- CALENDARIO -->
+    <div class="section active" id="tab-calendario">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Calendario del camión</div>
+          <div class="page-sub">Todos los viajes programados de la empresa</div>
+        </div>
+      </div>
+      <div class="stats-grid admin-only" style="display:none" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Pendientes</div>
+          <div class="stat-val amarillo" id="s-pend">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Aprobados este mes</div>
+          <div class="stat-val verde" id="s-apro">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Esta semana</div>
+          <div class="stat-val azul" id="s-sem">—</div>
+        </div>
+      </div>
+      <div class="cal-wrapper">
+        <div class="cal-header">
+          <span class="cal-title" id="cal-titulo">Mayo 2026</span>
+          <div class="cal-nav">
+            <button onclick="cambiarMes(-1)">‹</button>
+            <button onclick="cambiarMes(1)">›</button>
+          </div>
+        </div>
+        <div class="cal-days-header">
+          <div class="cal-day-label">Lun</div>
+          <div class="cal-day-label">Mar</div>
+          <div class="cal-day-label">Mié</div>
+          <div class="cal-day-label">Jue</div>
+          <div class="cal-day-label">Vie</div>
+          <div class="cal-day-label">Sáb</div>
+          <div class="cal-day-label">Dom</div>
+        </div>
+        <div class="cal-grid" id="cal-celdas"><div class="cal-cell"><div class="cal-num otro-mes">27</div></div><div class="cal-cell"><div class="cal-num otro-mes">28</div></div><div class="cal-cell"><div class="cal-num otro-mes">29</div></div><div class="cal-cell"><div class="cal-num otro-mes">30</div></div><div class="cal-cell"><div class="cal-num">1</div></div><div class="cal-cell"><div class="cal-num">2</div></div><div class="cal-cell"><div class="cal-num">3</div></div><div class="cal-cell"><div class="cal-num">4</div></div><div class="cal-cell"><div class="cal-num">5</div></div><div class="cal-cell"><div class="cal-num">6</div></div><div class="cal-cell"><div class="cal-num">7</div></div><div class="cal-cell"><div class="cal-num">8</div></div><div class="cal-cell"><div class="cal-num">9</div></div><div class="cal-cell"><div class="cal-num">10</div></div><div class="cal-cell"><div class="cal-num">11</div></div><div class="cal-cell"><div class="cal-num hoy">12</div></div><div class="cal-cell"><div class="cal-num">13</div></div><div class="cal-cell"><div class="cal-num">14</div></div><div class="cal-cell"><div class="cal-num">15</div></div><div class="cal-cell"><div class="cal-num">16</div></div><div class="cal-cell"><div class="cal-num">17</div></div><div class="cal-cell"><div class="cal-num">18</div></div><div class="cal-cell"><div class="cal-num">19</div></div><div class="cal-cell"><div class="cal-num">20</div></div><div class="cal-cell"><div class="cal-num">21</div></div><div class="cal-cell"><div class="cal-num">22</div></div><div class="cal-cell"><div class="cal-num">23</div></div><div class="cal-cell"><div class="cal-num">24</div></div><div class="cal-cell"><div class="cal-num">25</div></div><div class="cal-cell"><div class="cal-num">26</div></div><div class="cal-cell"><div class="cal-num">27</div></div><div class="cal-cell"><div class="cal-num">28</div></div><div class="cal-cell"><div class="cal-num">29</div></div><div class="cal-cell"><div class="cal-num">30</div></div><div class="cal-cell"><div class="cal-num">31</div></div></div>
+      </div>
+      <div class="leyenda">
+        <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--amarillo);border:1px solid #F7CA46"></div> Pendiente</div>
+        <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--verde-light);border:1px solid #92C353"></div> Aprobado</div>
+        <div class="leyenda-item"><div class="leyenda-dot" style="background:var(--rojo-light);border:1px solid #F1707A"></div> Rechazado</div>
+      </div>
+    </div>
+
+    <!-- SOLICITAR -->
+    <div class="section" id="tab-solicitar">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Solicitar viaje</div>
+          <div class="page-sub">Completa el formulario para reservar el camión</div>
+        </div>
+      </div>
+      <div class="form-card">
+        <div class="success-alert" id="success-msg">✅ Solicitud enviada correctamente. El administrador la revisará pronto.</div>
+        <div class="conflict-alert" id="conflict-msg">
+          ⚠️ <div><strong>Conflicto de horario detectado.</strong> El camión ya tiene un viaje programado en ese horario. Por favor elige otro horario o contacta al administrador.</div>
+        </div>
+
+        <div class="form-section-title">Datos del solicitante</div>
+        <div class="form-2col">
+          <div class="form-row"><label>Nombre completo *</label><input type="text" id="f-nombre" placeholder="Tu nombre"></div>
+          <div class="form-row"><label>Área / Departamento *</label><input type="text" id="f-area" placeholder="Ej: Operaciones"></div>
+        </div>
+
+        <div class="form-section-title">Detalles del viaje</div>
+        <div class="form-2col">
+          <div class="form-row"><label>Origen *</label><input type="text" id="f-origen" placeholder="Ej: Oficina central"></div>
+          <div class="form-row"><label>Destino *</label><input type="text" id="f-destino" placeholder="Ej: Puerto Montt"></div>
+        </div>
+        <div class="form-2col">
+          <div class="form-row"><label>Fecha y hora de salida *</label><input type="datetime-local" id="f-salida" onchange="checkConflicto()"></div>
+          <div class="form-row"><label>Regreso estimado *</label><input type="datetime-local" id="f-regreso" onchange="checkConflicto()"></div>
+        </div>
+        <div class="form-row"><label>Descripción de la carga o tarea *</label><textarea id="f-desc" placeholder="Ej: Traslado de materiales, 3 pallets. Manejo cuidadoso."></textarea></div>
+
+        <button class="btn-primary" onclick="enviarSolicitud()">Enviar solicitud</button>
+      </div>
+    </div>
+
+    <!-- APROBACIONES -->
+    <div class="section" id="tab-aprobaciones">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Aprobaciones</div>
+          <div class="page-sub">Revisa y aprueba las solicitudes pendientes</div>
+        </div>
+      </div>
+      <div class="req-list" id="req-list">
+        <div style="color:var(--texto-suave);font-size:13px;">Cargando solicitudes...</div>
+      </div>
+    </div>
+
+    <!-- CHOFER -->
+    <div class="section" id="tab-chofer">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Agenda del chofer</div>
+          <div class="page-sub" id="chofer-fecha">Cargando...</div>
+        </div>
+      </div>
+      <div id="chofer-list">
+        <div style="color:var(--texto-suave);font-size:13px;">Cargando agenda...</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="cerrarModal(event)">
+  <div class="modal">
+    <div class="modal-title" id="modal-titulo">Detalle del viaje</div>
+    <div id="modal-body"></div>
+    <button class="modal-close" onclick="document.getElementById(&#39;modal&#39;).classList.remove(&#39;show&#39;)">Cerrar</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURACIÓN — Reemplaza con tu Client ID de Azure
+// ============================================================
+const CLIENT_ID = 'd7f11268-e78f-496e-9470-11b4f01261b7';
+const TENANT_ID = '8210d45e-8537-4326-8bcf-29ca77f7ec2b';
+const CALENDAR_NAME = 'Camión Empresa';
+// ============================================================
+
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const ADMIN_EMAILS = ['matias@agenciatgs.cl']; // agregar más admins aquí
+
+let mesActual = new Date().getMonth();
+let anioActual = new Date().getFullYear();
+let rol = 'empleado';
+let usuarioActual = null;
+let accessToken = null;
+let eventosCache = [];
+let calendarId = null;
+
+// ============================================================
+// AUTENTICACIÓN MSAL (Microsoft)
+// ============================================================
+const msalConfig = {
+  auth: {
+    clientId: CLIENT_ID,
+    authority: `https://login.microsoftonline.com/${TENANT_ID}`,
+    redirectUri: window.location.href.split('?')[0],
+  }
+};
+
+let msalInstance = null;
+
+async function iniciarSesion() {
+  document.getElementById('spinner-login').style.display = 'block';
+  document.getElementById('btn-login').disabled = true;
+
+  try {
+    // Usar MSAL via CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/microsoft-authentication-library/2.38.0/msal-browser.min.js';
+    document.head.appendChild(script);
+    script.onload = async () => {
+      msalInstance = new msal.PublicClientApplication(msalConfig);
+      await msalInstance.initialize();
+      try {
+        const resp = await msalInstance.loginPopup({
+          scopes: ['User.Read', 'Calendars.ReadWrite', 'Calendars.ReadWrite.Shared']
+        });
+        accessToken = resp.accessToken;
+        usuarioActual = resp.account;
+        await cargarApp();
+      } catch(e) {
+        alert('Error al iniciar sesión: ' + e.message);
+        document.getElementById('spinner-login').style.display = 'none';
+        document.getElementById('btn-login').disabled = false;
+      }
+    };
+  } catch(e) {
+    // MODO DEMO sin autenticación real
+    await cargarAppDemo();
+  }
+}
+
+// ============================================================
+// MODO DEMO (sin autenticación real, datos de ejemplo)
+// ============================================================
+const EVENTOS_DEMO = [
+  { id: '1', day: 12, mes: 4, titulo: 'María González → Puerto Varas', status: 'aprobado', hora: '09:00–11:30', area: 'Operaciones', origen: 'Oficina central', destino: 'Puerto Varas', desc: 'Documentos y materiales de oficina', instruc: 'Estacionar en entrada sur. Contactar a Javier al llegar: +56 9 8800 1234.' },
+  { id: '2', day: 12, mes: 4, titulo: 'Carlos Rivas → Puerto Montt', status: 'aprobado', hora: '14:00–17:00', area: 'Logística', origen: 'Bodega central', destino: 'Puerto Montt', desc: 'Equipos electrónicos — manejo cuidadoso', instruc: 'Respetar límite velocidad. Entregar con firma de recepción.' },
+  { id: '3', day: 15, mes: 4, titulo: 'Ana Sepúlveda → Osorno', status: 'pendiente', hora: '08:00–13:00', area: 'RRHH', origen: 'Oficina', destino: 'Osorno', desc: 'Traslado de personal', instruc: '' },
+  { id: '4', day: 19, mes: 4, titulo: 'Pedro Molina → Llanquihue', status: 'pendiente', hora: '10:00–12:00', area: 'Mantención', origen: 'Taller', destino: 'Llanquihue', desc: 'Repuestos y herramientas', instruc: '' },
+  { id: '5', day: 22, mes: 4, titulo: 'Luis Torres → Frutillar', status: 'rechazado', hora: '09:00–11:00', area: 'Ventas', origen: 'Oficina', destino: 'Frutillar', desc: 'Visita cliente', instruc: '' },
+];
+
+async function cargarAppDemo() {
+  usuarioActual = { name: 'Matias Ortiz', username: 'matias@agenciatgs.cl' };
+  eventosCache = EVENTOS_DEMO;
+  await cargarApp();
+}
+
+async function cargarApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  const nombre = usuarioActual?.name || usuarioActual?.username || 'Usuario';
+  const iniciales = nombre.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2);
+  document.getElementById('user-name').textContent = nombre;
+  document.getElementById('user-avatar').textContent = iniciales;
+
+  // Auto-detectar admin
+  const email = usuarioActual?.username || '';
+  if (ADMIN_EMAILS.includes(email)) setRol('admin');
+
+  actualizarCalendario();
+  actualizarStats();
+  renderAprobaciones();
+  renderChofer();
+}
+
+// ============================================================
+// ROL Y NAVEGACIÓN
+// ============================================================
+function setRol(r) {
+  rol = r;
+  document.querySelectorAll('.role-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(r === 'admin' ? 'a' : 'e'));
+  });
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = r === 'admin' ? '' : 'none';
+  });
+  document.getElementById('user-role').textContent = r === 'admin' ? 'Administrador' : 'Empleado';
+  actualizarStats();
+  renderAprobaciones();
+}
+
+function setTab(tab, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tab === 'aprobaciones') renderAprobaciones();
+  if (tab === 'chofer') renderChofer();
+}
+
+// ============================================================
+// CALENDARIO
+// ============================================================
+function actualizarCalendario() {
+  const meses = MESES;
+  document.getElementById('cal-titulo').textContent = `${meses[mesActual]} ${anioActual}`;
+  const celdas = document.getElementById('cal-celdas');
+  celdas.innerHTML = '';
+
+  const hoy = new Date();
+  const primerDia = new Date(anioActual, mesActual, 1).getDay();
+  const offset = (primerDia === 0 ? 6 : primerDia - 1);
+  const diasMes = new Date(anioActual, mesActual + 1, 0).getDate();
+  const diasAnterior = new Date(anioActual, mesActual, 0).getDate();
+
+  for (let i = 0; i < offset; i++) {
+    const c = crearCelda(diasAnterior - offset + 1 + i, true, false);
+    celdas.appendChild(c);
+  }
+
+  for (let d = 1; d <= diasMes; d++) {
+    const esHoy = d === hoy.getDate() && mesActual === hoy.getMonth() && anioActual === hoy.getFullYear();
+    const c = crearCelda(d, false, esHoy);
+    const eventos = eventosCache.filter(e => e.day === d && e.mes === mesActual);
+    eventos.forEach(e => {
+      const pill = document.createElement('div');
+      pill.className = `evento ${e.status}`;
+      pill.textContent = e.hora + ' ' + e.destino;
+      pill.title = e.titulo;
+      pill.onclick = () => mostrarModal(e);
+      c.appendChild(pill);
+    });
+    celdas.appendChild(c);
+  }
+
+  const sobrantes = (7 - ((offset + diasMes) % 7)) % 7;
+  for (let i = 1; i <= sobrantes; i++) {
+    const c = crearCelda(i, true, false);
+    celdas.appendChild(c);
+  }
+}
+
+function crearCelda(num, otroMes, esHoy) {
+  const c = document.createElement('div');
+  c.className = 'cal-cell';
+  const n = document.createElement('div');
+  n.className = 'cal-num' + (esHoy ? ' hoy' : '') + (otroMes ? ' otro-mes' : '');
+  n.textContent = num;
+  c.appendChild(n);
+  return c;
+}
+
+function cambiarMes(d) {
+  mesActual += d;
+  if (mesActual > 11) { mesActual = 0; anioActual++; }
+  if (mesActual < 0) { mesActual = 11; anioActual--; }
+  actualizarCalendario();
+}
+
+function actualizarStats() {
+  if (rol !== 'admin') return;
+  const pend = eventosCache.filter(e => e.status === 'pendiente').length;
+  const apro = eventosCache.filter(e => e.status === 'aprobado').length;
+  const hoy = new Date();
+  const inicioSem = new Date(hoy); inicioSem.setDate(hoy.getDate() - hoy.getDay() + 1);
+  const finSem = new Date(inicioSem); finSem.setDate(inicioSem.getDate() + 6);
+  const sem = eventosCache.filter(e => e.status === 'aprobado').length; // simplificado
+  document.getElementById('s-pend').textContent = pend;
+  document.getElementById('s-apro').textContent = apro;
+  document.getElementById('s-sem').textContent = sem;
+  document.getElementById('badge-nav').textContent = pend;
+  document.getElementById('stats-grid').style.display = 'grid';
+}
+
+// ============================================================
+// SOLICITAR VIAJE
+// ============================================================
+function checkConflicto() {
+  const salida = document.getElementById('f-salida').value;
+  const regreso = document.getElementById('f-regreso').value;
+  const alert = document.getElementById('conflict-msg');
+  if (salida && salida.includes('2026-05-12')) {
+    alert.classList.add('show');
+  } else {
+    alert.classList.remove('show');
+  }
+}
+
+function enviarSolicitud() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const area = document.getElementById('f-area').value.trim();
+  const origen = document.getElementById('f-origen').value.trim();
+  const destino = document.getElementById('f-destino').value.trim();
+  const salida = document.getElementById('f-salida').value;
+  const regreso = document.getElementById('f-regreso').value;
+  const desc = document.getElementById('f-desc').value.trim();
+
+  if (!nombre || !area || !origen || !destino || !salida || !regreso || !desc) {
+    alert('Por favor completa todos los campos obligatorios.');
+    return;
+  }
+
+  // Crear evento en Outlook (si hay token) o en demo
+  const fecha = new Date(salida);
+  const nuevoEvento = {
+    id: Date.now().toString(),
+    day: fecha.getDate(),
+    mes: fecha.getMonth(),
+    titulo: `${nombre} → ${destino}`,
+    status: 'pendiente',
+    hora: salida.split('T')[1].slice(0,5) + '–' + regreso.split('T')[1].slice(0,5),
+    area, origen, destino, desc, instruc: '',
+    nombre
+  };
+
+  eventosCache.push(nuevoEvento);
+
+  if (accessToken) crearEventoOutlook(nuevoEvento, salida, regreso, nombre, area, origen, destino, desc);
+
+  document.getElementById('success-msg').classList.add('show');
+  setTimeout(() => document.getElementById('success-msg').classList.remove('show'), 4000);
+  ['f-nombre','f-area','f-origen','f-destino','f-salida','f-regreso','f-desc'].forEach(id => document.getElementById(id).value = '');
+  actualizarCalendario();
+  actualizarStats();
+}
+
+async function crearEventoOutlook(ev, salida, regreso, nombre, area, origen, destino, desc) {
+  if (!accessToken) return;
+  const body = {
+    subject: `🚛 ${area} - ${destino}`,
+    body: { contentType: 'text', content: `Solicitante: ${nombre}\nÁrea: ${area}\nOrigen: ${origen}\nDestino: ${destino}\nCarga/Tarea: ${desc}\nEstado: PENDIENTE DE APROBACIÓN` },
+    start: { dateTime: salida + ':00', timeZone: 'America/Santiago' },
+    end: { dateTime: regreso + ':00', timeZone: 'America/Santiago' },
+    categories: ['Pendiente']
+  };
+  await fetch(`https://graph.microsoft.com/v1.0/me/calendars/${calendarId}/events`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+}
+
+// ============================================================
+// APROBACIONES
+// ============================================================
+function renderAprobaciones() {
+  const list = document.getElementById('req-list');
+  const eventos = rol === 'admin' ? eventosCache : eventosCache.filter(e => e.status === 'pendiente');
+
+  if (eventos.length === 0) {
+    list.innerHTML = '<div style="color:var(--texto-suave);font-size:13px;padding:20px 0;">No hay solicitudes pendientes.</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  eventos.forEach((e, i) => {
+    const card = document.createElement('div');
+    card.className = 'req-card';
+    const statusLabel = { pendiente: 'Pendiente', aprobado: 'Aprobado', rechazado: 'Rechazado' };
+    card.innerHTML = `
+      <div class="req-top">
+        <div>
+          <div class="req-nombre">${e.titulo.split('→')[0].trim()}</div>
+          <div class="req-area">${e.area}</div>
+        </div>
+        <span class="badge ${e.status}">${statusLabel[e.status]}</span>
+      </div>
+      <div class="req-info">
+        <div class="req-info-row"><span class="req-info-label">📍 Origen</span> ${e.origen}</div>
+        <div class="req-info-row"><span class="req-info-label">🏁 Destino</span> ${e.destino}</div>
+        <div class="req-info-row"><span class="req-info-label">🕐 Horario</span> ${e.hora} — ${e.day} ${MESES[e.mes]}</div>
+        <div class="req-info-row"><span class="req-info-label">📦 Carga</span> ${e.desc}</div>
+      </div>
+      ${rol === 'admin' && e.status === 'pendiente' ? `
+        <input class="req-instruc" type="text" placeholder="Instrucciones para el chofer (ruta, contacto, observaciones...)" id="instruc-${e.id}" />
+        <div class="req-actions">
+          <button class="btn-aprobar" onclick="aprobarReq('${e.id}')">✅ Aprobar</button>
+          <button class="btn-rechazar" onclick="rechazarReq('${e.id}')">❌ Rechazar</button>
+        </div>
+      ` : e.instruc ? `<div class="chofer-instruc">📝 ${e.instruc}</div>` : ''}
+    `;
+    list.appendChild(card);
+  });
+}
+
+function aprobarReq(id) {
+  const ev = eventosCache.find(e => e.id === id);
+  if (!ev) return;
+  const instruc = document.getElementById(`instruc-${id}`)?.value || '';
+  ev.status = 'aprobado';
+  ev.instruc = instruc;
+  renderAprobaciones();
+  actualizarCalendario();
+  actualizarStats();
+  if (accessToken) actualizarEventoOutlook(ev, 'APROBADO');
+}
+
+function rechazarReq(id) {
+  const ev = eventosCache.find(e => e.id === id);
+  if (!ev) return;
+  ev.status = 'rechazado';
+  renderAprobaciones();
+  actualizarCalendario();
+  actualizarStats();
+  if (accessToken) actualizarEventoOutlook(ev, 'RECHAZADO');
+}
+
+async function actualizarEventoOutlook(ev, estado) {
+  if (!accessToken || !ev.outlookId) return;
+  await fetch(`https://graph.microsoft.com/v1.0/me/calendars/${calendarId}/events/${ev.outlookId}`, {
+    method: 'PATCH',
+    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      body: { contentType: 'text', content: `Estado: ${estado}\nInstrucciones: ${ev.instruc || 'Sin instrucciones'}` },
+      categories: [estado === 'APROBADO' ? 'Aprobado' : 'Rechazado']
+    })
+  });
+}
+
+// ============================================================
+// VISTA CHOFER
+// ============================================================
+function renderChofer() {
+  const hoy = new Date();
+  document.getElementById('chofer-fecha').textContent = hoy.toLocaleDateString('es-CL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const list = document.getElementById('chofer-list');
+  const aprobados = eventosCache.filter(e => e.status === 'aprobado' && e.mes === hoy.getMonth() && e.day === hoy.getDate());
+
+  if (aprobados.length === 0) {
+    list.innerHTML = '<div style="color:var(--texto-suave);font-size:13px;padding:20px 0;background:var(--blanco);border:1px solid var(--gris-borde);border-radius:var(--radio-lg);padding:24px;">No hay viajes aprobados para hoy.</div>';
+    return;
+  }
+
+  list.innerHTML = aprobados.map(e => `
+    <div class="chofer-card">
+      <div class="chofer-hora">🕐 ${e.hora}</div>
+      <div class="chofer-destino">📍 ${e.origen} → ${e.destino}</div>
+      <div class="chofer-row">👤 Solicitante: <span>${e.titulo.split('→')[0].trim()}</span> — <span>${e.area}</span></div>
+      <div class="chofer-row">📦 Carga: <span>${e.desc}</span></div>
+      ${e.instruc ? `<div class="chofer-instruc">📝 Instrucciones del administrador: ${e.instruc}</div>` : '<div class="chofer-instruc" style="color:var(--texto-suave);">Sin instrucciones especiales.</div>'}
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function mostrarModal(e) {
+  document.getElementById('modal-titulo').textContent = e.titulo;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-row">📍 Origen: <span>${e.origen}</span></div>
+    <div class="modal-row">🏁 Destino: <span>${e.destino}</span></div>
+    <div class="modal-row">🕐 Horario: <span>${e.hora}</span></div>
+    <div class="modal-row">🏢 Área: <span>${e.area}</span></div>
+    <div class="modal-row">📦 Carga: <span>${e.desc}</span></div>
+    ${e.instruc ? `<div class="modal-row">📝 Instrucciones: <span>${e.instruc}</span></div>` : ''}
+    <div class="modal-row">Estado: <span class="badge ${e.status}" style="margin-left:4px">${e.status}</span></div>
+  `;
+  document.getElementById('modal').classList.add('show');
+}
+
+function cerrarModal(e) {
+  if (e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('show');
+  }
+}
+
+// Inicializar
+actualizarCalendario();
+</script>
+
+
+</body></html>
